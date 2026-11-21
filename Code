@@ -1,0 +1,69 @@
+#include <Servo.h>
+Servo thisServo;
+const int trigPin = 9;
+const int echoPin = 8;
+int led = 12;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  pinMode(led, OUTPUT);
+  thisServo.attach(3);
+}
+
+void loop() {
+
+  for (int angle = 15; angle < 165; angle++) {
+      //start shooting echos
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  long duration = pulseIn(echoPin, HIGH);
+  float cm = duration * 0.034 / 2;
+
+
+  if (cm < 10) {
+delay(100);
+    digitalWrite(led, HIGH);
+delay(250);
+    digitalWrite(led, LOW);
+  } else {
+    digitalWrite(led, LOW);
+  }
+
+
+    thisServo.write(angle);
+    delay(25);
+    Serial.println(cm);
+  }
+  for (int angle = 165; angle >= 15; angle--) {
+      //start shooting echos
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  long duration = pulseIn(echoPin, HIGH);
+  float cm = duration * 0.034 / 2;
+
+
+  if (cm < 10) {
+delay(100);
+    digitalWrite(led, HIGH);
+delay(250);
+    digitalWrite(led, LOW);
+  } else {
+    digitalWrite(led, LOW);
+  }
+
+
+    thisServo.write(angle);
+    delay(25);
+      Serial.println(cm);
+  }
+}
